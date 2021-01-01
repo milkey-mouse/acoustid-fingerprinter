@@ -22,6 +22,7 @@
 #define FPSUBMIT_DECODER_H_
 
 #include <QMutex>
+#include <iostream>
 #include <string>
 #include <algorithm>
 #include <stdint.h>
@@ -276,7 +277,11 @@ inline void Decoder::Decode(FingerprintCalculator *consumer, int max_length)
 				length = std::min(remaining, length);
 			}
 
-			consumer->feed(audio_buffer, length);
+            if (length % Channels() == 0) {
+    			consumer->feed(audio_buffer, length);
+            } else {
+                std::cerr << "bruh " << m_file_name;
+            }
 
 			if (max_length) {
 				remaining -= length;
